@@ -349,6 +349,10 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+# App settings with secrets
+appsettings*.json
+*.env
+secrets.json
 
 # BeatPulse healthcheck temp database
 healthchecksdb
