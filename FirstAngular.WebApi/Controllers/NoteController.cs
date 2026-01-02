@@ -37,7 +37,7 @@ namespace FirstAngular.WebApi.Controllers
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
-        [HttpPatch("{id}/pin")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PinUnpinNote(Guid id, [FromBody] ToggleNotePinCommand command)
         {
             command.Id = id;
