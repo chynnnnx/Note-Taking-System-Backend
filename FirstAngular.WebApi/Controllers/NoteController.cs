@@ -46,8 +46,6 @@ namespace FirstAngular.WebApi.Controllers
             return Ok(result.Data);
         }
 
-
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(Guid id)
         {
