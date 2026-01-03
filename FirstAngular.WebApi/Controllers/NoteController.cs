@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FirstAngular.Application.Features.Notes.Queries;
 using FirstAngular.Application.Features.Notes.Commands.TogglePin;
+using FirstAngular.Application.Features.Archives.Commands.ArchiveNote;
+using FirstAngular.Application.Features.Archives.Commands.UnarchiveNote;
 
 namespace FirstAngular.WebApi.Controllers
 {
@@ -37,7 +39,7 @@ namespace FirstAngular.WebApi.Controllers
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}/toggle-pin")]
         public async Task<IActionResult> PinUnpinNote(Guid id, [FromBody] ToggleNotePinCommand command)
         {
             command.Id = id;
@@ -45,6 +47,24 @@ namespace FirstAngular.WebApi.Controllers
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
+        [HttpPatch("{id}/archive")]
+        public async Task<IActionResult> ArchiveNote(Guid id, [FromBody] ArchiveNoteCommand command)
+        {
+            command.Id = id;
+            var result = await _mediator.Send(command);
+            if (!result.Success) return BadRequest(new { message = result.Error });
+            return Ok(result.Data);
+        }
+
+        [HttpPatch("{id}/unarchive")]
+        public async Task<IActionResult> UnArchiveNote (Guid id, [FromBody] UnarchiveNoteCommand command)
+        {
+            command.Id = id;
+            var result = await _mediator.Send(command);
+            if (!result.Success) return BadRequest(new { message = result.Error });
+            return Ok(result.Data);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(Guid id)
