@@ -28,7 +28,9 @@ namespace FirstAngular.Application.Features.Notes.Commands.TogglePin
             if (string.IsNullOrEmpty(userId)) return Result<TogglePinDTO>.Fail("User not logged in.");
             var note = await _unitOfWork.NoteRepository.GetByIdAsync(command.Id);
             if (note == null || note.UserId != userId) return Result<TogglePinDTO>.Fail("Note not found");
-            note.IsPinned = command.IsPinned;
+            var changed = note.SetPinned(command.IsPinned);
+            if (!changed) return Result<TogglePinDTO>.Fail("Pin state unchanged or note is archived");
+
 
             _unitOfWork.NoteRepository.Update(note);
             await _unitOfWork.SaveChangesAsync();
