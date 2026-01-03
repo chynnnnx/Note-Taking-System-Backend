@@ -23,7 +23,7 @@ namespace FirstAngular.Application.Features.Notes.Commands.UpdateNote
             _mapper = mapper;
         }
 
-        public async Task <Result<NoteDTO>> Handle (UpdateNoteCommand command, CancellationToken cancellationToken)
+        public async Task<Result<NoteDTO>> Handle(UpdateNoteCommand command, CancellationToken cancellationToken)
         {
             var userId = _currentUserService.UserId;
             if (string.IsNullOrEmpty(userId)) return Result<NoteDTO>.Fail("User not logged in.");
@@ -31,15 +31,19 @@ namespace FirstAngular.Application.Features.Notes.Commands.UpdateNote
             var note = await _unitOfWork.NoteRepository.GetByIdAsync(command.Id);
             if (note == null || note.UserId != userId)
                 return Result<NoteDTO>.Fail("Note not found or access denied.");
-            
 
-            var updatedNote = _mapper.Map(command, note);
-            updatedNote.UpdatedAt = DateTime.UtcNow;
-            _unitOfWork.NoteRepository.Update(updatedNote);
+             note.Update(
+                title: command.Title,
+                content: command.Content,
+                categoryId: command.CategoryId
+            );
+
+            _unitOfWork.NoteRepository.Update(note);
             await _unitOfWork.SaveChangesAsync();
-            var dto = _mapper.Map<NoteDTO>(updatedNote);
-            return Result<NoteDTO>.Ok(dto);
 
+            var dto = _mapper.Map<NoteDTO>(note);
+            return Result<NoteDTO>.Ok(dto);
         }
+
     }
 }
