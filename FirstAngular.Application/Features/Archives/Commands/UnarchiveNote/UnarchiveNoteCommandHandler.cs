@@ -24,7 +24,7 @@ namespace FirstAngular.Application.Features.Archives.Commands.UnarchiveNote
             var userId = _currentUserService.UserId;
             if (string.IsNullOrEmpty(userId)) return Result<bool>.Fail("User not logged in.");
 
-            var note = await _unitOfWork.NoteRepository.GetByIdAsync(userId);
+            var note = await _unitOfWork.NoteRepository.GetByIdAsync(command.Id);
             if (note == null || note.UserId != userId) return Result<bool>.Fail("Note not found");
 
             var success = note.Unarchive();
