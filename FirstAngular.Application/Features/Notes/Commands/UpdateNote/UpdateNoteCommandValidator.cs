@@ -12,7 +12,7 @@ namespace FirstAngular.Application.Features.Notes.Commands.UpdateNote
         public UpdateNoteCommandValidator() {
 
             RuleFor(x => x.Title)
-                 .MaximumLength(200).WithMessage("Title cannot exceed 300 characters.");
+                 .MaximumLength(200).WithMessage("Title cannot exceed 200 characters.");
           
 
         }
