@@ -9,8 +9,9 @@ namespace FirstAngular.Application.Interfaces
 {
     public interface INoteRepository : IBaseRepository<NoteEntity>
     {
-        Task<List<NoteEntity>> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, string? searchTerm = null,
-            int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default);
+      
+        Task<(List<NoteEntity> Notes, int TotalCount)> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, string? searchTerm = null,
+     int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default);
 
     }
 
