@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FirstAngular.Application.Features.Notes.Queries
 {
-    public class GetNotesByUserQuery : IRequest<Result<List<NoteDTO>>>
+    public class GetNotesByUserQuery : IRequest<Result<PagedResult<NoteDTO>>>
     {
         public bool? IsPinned { get; set; }
         public bool? IsArchived { get; set; }

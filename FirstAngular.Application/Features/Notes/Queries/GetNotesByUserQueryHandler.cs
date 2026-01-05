@@ -3,13 +3,12 @@ using FirstAngular.Application.Common.Results;
 using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Interfaces;
 using MediatR;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FirstAngular.Application.Features.Notes.Queries
 {
-    public class GetNotesByUserQueryHandler : IRequestHandler<GetNotesByUserQuery, Result<List<NoteDTO>>>
+    public class GetNotesByUserQueryHandler : IRequestHandler<GetNotesByUserQuery, Result<PagedResult<NoteDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
@@ -22,18 +21,30 @@ namespace FirstAngular.Application.Features.Notes.Queries
             _mapper = mapper;
         }
 
-        public async Task<Result<List<NoteDTO>>> Handle(GetNotesByUserQuery query, CancellationToken cancellationToken)
+        public async Task<Result<PagedResult<NoteDTO>>> Handle(GetNotesByUserQuery query, CancellationToken cancellationToken)
         {
             var userId = _currentUserService.UserId;
             if (string.IsNullOrEmpty(userId))
-                return Result<List<NoteDTO>>.Fail("User not logged in.");
+                return Result<PagedResult<NoteDTO>>.Fail("User not logged in.");
 
-             var notes = await _unitOfWork.NoteRepository.GetNotesByUserAsync(userId, query.IsPinned,
-                 query.IsArchived, query.SearchTerm, query.PageNumber, query.PageSize, cancellationToken);
+         
+            var (notes, totalCount) = await _unitOfWork.NoteRepository.GetNotesByUserAsync(
+                userId,query.IsPinned,query.IsArchived,  query.SearchTerm,query.PageNumber,
+                query.PageSize,cancellationToken);
 
-             var dtos = _mapper.Map<List<NoteDTO>>(notes);
 
-            return Result<List<NoteDTO>>.Ok(dtos);
+            var dtos = _mapper.Map<List<NoteDTO>>(notes);
+
+            var pagedResult = new PagedResult<NoteDTO>
+            {
+                Data = dtos,
+                TotalCount = totalCount,
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize
+            };
+
+            return Result<PagedResult<NoteDTO>>.Ok(pagedResult, "Notes loaded successfully.");
         }
+
     }
 }
