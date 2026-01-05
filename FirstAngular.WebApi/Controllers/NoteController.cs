@@ -37,7 +37,7 @@ namespace FirstAngular.WebApi.Controllers
 
             var result = await _mediator.Send(command);
             if (!result.Success) return BadRequest(new { message = result.Error });
-            return Ok(result.Data);
+            return Ok(new { data = result.Data, message = result.Message });
         }
         [HttpPatch("{id}/toggle-pin")]
         public async Task<IActionResult> PinUnpinNote(Guid id, [FromBody] ToggleNotePinCommand command)
@@ -84,7 +84,9 @@ namespace FirstAngular.WebApi.Controllers
             if (!result.Success)
                 return BadRequest(new { message = result.Error });
 
-            return Ok(result.Data);
+            return Ok(new{data = result.Data.Data, total = result.Data.TotalCount,page = result.Data.PageNumber,pageSize = result.Data.PageSize,
+                message = result.Message
+            });
         }
 
 
