@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace FirstAngular.Application.Features.Archives.Commands.ArchiveNote
 {
-    public class ArchiveNoteCommand: IRequest<Result<bool>>
-    {
-        public Guid Id { get; set; }
-        public string UserId { get; set; } = string.Empty;
-    }
+    //public class ArchiveNoteCommand: IRequest<Result<bool>>
+    //{
+    //    public Guid Id { get; set; }
+    //    public string UserId { get; set; } = string.Empty;
+    //}
+    public sealed record ArchiveNoteCommand(Guid Id) : IRequest<Result<bool>>;
 }
