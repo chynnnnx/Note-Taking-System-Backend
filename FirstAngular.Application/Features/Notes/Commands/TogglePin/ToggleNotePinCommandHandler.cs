@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Interfaces;
+using FirstAngular.Application.Features.Notes.DTOs;
 namespace FirstAngular.Application.Features.Notes.Commands.TogglePin
 {
     public class ToggleNotePinCommandHandler: IRequestHandler< ToggleNotePinCommand, Result<TogglePinDTO>>
@@ -35,7 +35,7 @@ namespace FirstAngular.Application.Features.Notes.Commands.TogglePin
             _unitOfWork.NoteRepository.Update(note);
             await _unitOfWork.SaveChangesAsync();
 
-            return Result<TogglePinDTO>.Ok(new TogglePinDTO { Id = note.Id, IsPinned = note.IsPinned });
+            return Result<TogglePinDTO>.Ok(new TogglePinDTO(note.Id, note.IsPinned));
 
         }
     }
