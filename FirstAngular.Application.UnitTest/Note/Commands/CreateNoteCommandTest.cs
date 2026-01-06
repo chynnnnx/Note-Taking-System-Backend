@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Features.Notes.Commands.CreateNote;
+using FirstAngular.Application.Features.Notes.DTOs;
 using FirstAngular.Application.Interfaces;
 using FirstAngular.Domain.Entities;
 using Moq;
@@ -17,7 +17,7 @@ namespace FirstAngular.Application.UnitTests.Note.Commands
         [Fact]
         public async Task Handle_ValidCommand_ReturnsNoteDTO()
         {
-             var command = new CreateNoteCommand { Title = "Test Note", Content = "Content", IsPinned = false };
+             var command = new CreateNoteCommand ( "Test Note", "Content", false, null );
 
             var mockNoteRepo = new Mock<INoteRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Features.Categories.Commands.CreateCategory;
+using FirstAngular.Application.Features.Categories.DTOs;
 using FirstAngular.Application.Interfaces;
 using FirstAngular.Domain.Entities;
 using Moq;

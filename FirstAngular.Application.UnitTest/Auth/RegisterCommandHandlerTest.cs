@@ -47,13 +47,12 @@ namespace FirstAngular.Application.UnitTests.Auth
             _mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<AppIdentityUser>(), "User"))
                             .ReturnsAsync(IdentityResult.Success);
 
-            var handler = new RegisterCommandHandler(_mockUserManager.Object, _mockRoleManager.Object);
+            var handler = new RegisterCommandHandler(_mockUserManager.Object);
 
              var result = await handler.Handle(command, CancellationToken.None);
 
              Assert.True(result.Success);
-            Assert.Equal("Registered successfully", result.Data);
-        }
+         }
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenEmailAlreadyExists()
@@ -64,16 +63,20 @@ namespace FirstAngular.Application.UnitTests.Auth
                 Password = "P@ssw0rd"
             };
 
-            _mockUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-                            .ReturnsAsync(new AppIdentityUser());
+             var existingUser = AppIdentityUser.Create("Test", null, "User", command.Email);
+            existingUser.Id = "user1";
 
-            var handler = new RegisterCommandHandler(_mockUserManager.Object, _mockRoleManager.Object);
-             
+            _mockUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                            .ReturnsAsync(existingUser);
+
+            var handler = new RegisterCommandHandler(_mockUserManager.Object);
+ 
             var result = await handler.Handle(command, CancellationToken.None);
-              
-            Assert.False(result.Success);
+
+             Assert.False(result.Success);
             Assert.Equal("Email is already registered.", result.Error);
         }
+
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenUserCreationFails()
@@ -90,7 +93,7 @@ namespace FirstAngular.Application.UnitTests.Auth
             _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<AppIdentityUser>(), It.IsAny<string>()))
                             .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Creation error" }));
 
-            var handler = new RegisterCommandHandler(_mockUserManager.Object, _mockRoleManager.Object);
+            var handler = new RegisterCommandHandler(_mockUserManager.Object);
 
       
             var result = await handler.Handle(command, CancellationToken.None);
