@@ -9,8 +9,35 @@ namespace FirstAngular.Domain.Entities
 {
     public class AppIdentityUser: IdentityUser
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string MiddleInitial { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        public string FirstName { get; private set; } = string.Empty;
+        public string MiddleInitial { get; private set; } = string.Empty;
+        public string LastName { get; private set; } = string.Empty;
+
+        protected AppIdentityUser() { }
+
+        public static AppIdentityUser Create (string firstName, string? middleInitial, string lastName, string email)
+        {
+            return new AppIdentityUser
+            {
+                FirstName = firstName,
+                MiddleInitial = middleInitial ?? string.Empty,
+                LastName = lastName,
+                Email = email,
+                UserName = email,
+                EmailConfirmed = true
+            };
+        }
+        public bool UpdateProfile(string firstName,string? middleInitial,string lastName)
+        {
+            if (FirstName == firstName && MiddleInitial == (middleInitial ?? string.Empty) && LastName == lastName)
+                return false;
+
+            FirstName = firstName;
+            MiddleInitial = middleInitial ?? string.Empty;
+            LastName = lastName;
+
+            return true;
+        }
     }
+
 }
