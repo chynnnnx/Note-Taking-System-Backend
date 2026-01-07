@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
+using FirstAngular.Application.Features.Notes.DTOs;
 using FirstAngular.Application.Interfaces;
 using FirstAngular.Domain.Entities;
 using MediatR;
