@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
 using Microsoft.AspNetCore.Identity;
 using FirstAngular.Domain.Entities;
 using FirstAngular.Application.Interfaces;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FirstAngular.Application.Features.Auth.DTOs;
 
 namespace FirstAngular.Application.Features.Auth.Commands
 {
@@ -25,39 +26,33 @@ namespace FirstAngular.Application.Features.Auth.Commands
 
         public async Task<Result<LoginResponse>> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
-            try
+            var user = await _userManager.FindByEmailAsync(command.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, command.Password))
+                return Result<LoginResponse>.Fail("Invalid email or password");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _tokenService.GenerateJwtToken(user.Id, user.Email, roles);
+
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            var newRefresh = new RefreshToken
             {
-                var user = await _userManager.FindByEmailAsync(command.Email);
-                if (user == null || !await _userManager.CheckPasswordAsync(user, command.Password))
-                    return Result<LoginResponse>.Fail("Invalid email or password");
+                TokenHash = _tokenService.HashToken(refreshToken),
+                UserId = user.Id,
+                Expiration = DateTime.UtcNow.AddDays(7)
+            };
 
-                var roles = await _userManager.GetRolesAsync(user);
+            await _unitOfWork.RefreshTokenRepository.AddAsync(newRefresh);
+            await _unitOfWork.SaveChangesAsync();
 
-                var token = _tokenService.GenerateJwtToken(user.Id, user.Email, roles);
+            return Result<LoginResponse>.Ok(
+             new LoginResponse(
+                 token,
+                 refreshToken,
+                 DateTime.UtcNow.AddHours(2),
+                 roles.FirstOrDefault() ?? string.Empty
+             )
+         );
 
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                var newRefresh = new RefreshToken
-                {
-                    TokenHash = _tokenService.HashToken(refreshToken),
-                    UserId = user.Id,
-                    Expiration = DateTime.UtcNow.AddDays(7)
-                };
-
-                await _unitOfWork.RefreshTokenRepository.AddAsync(newRefresh);
-                await _unitOfWork.SaveChangesAsync();
-
-                return Result<LoginResponse>.Ok(new LoginResponse
-                {
-                    Token = token,
-                    RefreshToken = refreshToken,
-                    Expiration = DateTime.UtcNow.AddHours(2),
-                    Role = roles.FirstOrDefault()
-                });
-            }
-            catch (Exception ex)
-            {
-                return Result<LoginResponse>.Fail(ex.Message);
-            }
         }
     }
 }

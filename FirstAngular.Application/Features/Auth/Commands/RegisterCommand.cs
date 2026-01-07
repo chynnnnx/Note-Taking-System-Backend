@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using FirstAngular.Application.Common.Results;
+using FirstAngular.Domain.Entities;
 namespace FirstAngular.Application.Features.Auth.Commands
 {
-    public class RegisterCommand: IRequest<Result<string>>
+    public class RegisterCommand: IRequest<Result<AppIdentityUser>>
     {
         public string Email { get; set; } = default!;
         public string Password { get; set; } = default!;
