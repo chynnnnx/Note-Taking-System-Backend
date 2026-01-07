@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using FirstAngular.Application.Common.Results;
 namespace FirstAngular.Application.Features.Notes.Commands.DeleteNote
 {
-    public class DeleteNoteCommand: IRequest<Result<object>>
-    {
-        public Guid Id { get; set; }
-    }
+    //public class DeleteNoteCommand: IRequest<Result<object>>
+    //{
+    //    public Guid Id { get; set; }
+    //}
+
+    public sealed record DeleteNoteCommand(Guid Id) : IRequest<Result<object>>;
 }

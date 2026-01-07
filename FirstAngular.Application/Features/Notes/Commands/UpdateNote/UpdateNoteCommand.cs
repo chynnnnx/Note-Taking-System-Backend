@@ -5,18 +5,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FirstAngular.Application.DTOs;
+using FirstAngular.Application.Features.Notes.DTOs;
 namespace FirstAngular.Application.Features.Notes.Commands.UpdateNote
 {
-    public class UpdateNoteCommand: IRequest<Result<NoteDTO>>
-    {
-        public Guid Id { get; set; }  
-        public string? Title { get; set; }
-        public string? Content { get; set; } 
-        public bool IsPinned { get; set; }
-        public bool IsArchived { get; set; }
-        public Guid? CategoryId { get; set; } 
+    //public class UpdateNoteCommand: IRequest<Result<NoteDTO>>
+    //{
+    //    public Guid Id { get; set; }  
+    //    public string? Title { get; set; }
+    //    public string? Content { get; set; } 
+    //    public bool IsPinned { get; set; }
+    //    public bool IsArchived { get; set; }
+    //    public Guid? CategoryId { get; set; } 
 
 
-    }
+    //}
+
+    public sealed record UpdateNoteCommand(
+        Guid Id,
+        string? Title,
+        string? Content,
+        bool IsPinned,
+        bool IsArchived,
+        Guid? CategoryId
+    ) : IRequest<Result<UpdateNoteDTO>>;
 }
