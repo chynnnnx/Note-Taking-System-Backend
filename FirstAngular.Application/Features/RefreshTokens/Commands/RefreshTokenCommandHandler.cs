@@ -1,15 +1,16 @@
 ﻿using MediatR;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Interfaces;
 using FirstAngular.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FirstAngular.Application.Features.Auth.DTOs;
+using FirstAngular.Application.Common.Results;
 
 namespace FirstAngular.Application.Features.RefreshTokens.Commands
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, LoginResponse>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<LoginResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
@@ -22,7 +23,7 @@ namespace FirstAngular.Application.Features.RefreshTokens.Commands
             _userManager = userManager;
         }
 
-        public async Task<LoginResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Result<LoginResponse>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
         {
             var hashedToken = _tokenService.HashToken(command.RefreshToken);
 
@@ -31,14 +32,11 @@ namespace FirstAngular.Application.Features.RefreshTokens.Commands
                     && !t.IsRevoked
                     && t.Expiration > DateTime.UtcNow);
 
-            if (existingToken == null)
-                throw new Exception("Invalid or expired refresh token");
+            if (existingToken == null) return Result<LoginResponse>.Fail("Invalid or expired refresh token");
+            var user = await _userManager.FindByIdAsync(existingToken.UserId);
+            if (user == null) return Result<LoginResponse>.Fail("User not found");  
 
-             var user = await _userManager.FindByIdAsync(existingToken.UserId);
-            if (user == null)
-                throw new Exception("User not found");
-
-             var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
             var newToken = _tokenService.GenerateJwtToken(user.Id, user.Email, roles);
             var newRefreshTokenValue = _tokenService.GenerateRefreshToken();
 
@@ -55,12 +53,15 @@ namespace FirstAngular.Application.Features.RefreshTokens.Commands
 
             await _unitOfWork.SaveChangesAsync();
 
-            return new LoginResponse
-            {
-                Token = newToken,
-                RefreshToken = newRefreshTokenValue,
-                Expiration = DateTime.UtcNow.AddHours(2)
-            };
+            return Result<LoginResponse>.Ok(
+                new LoginResponse
+            (
+                newToken,
+                  newRefreshTokenValue,
+               DateTime.UtcNow.AddHours(2),
+                roles.FirstOrDefault() ?? string.Empty
+            )
+            );
         }
     }
 }

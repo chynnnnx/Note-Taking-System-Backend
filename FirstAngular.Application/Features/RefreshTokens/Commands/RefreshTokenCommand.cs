@@ -1,4 +1,5 @@
-﻿using FirstAngular.Application.DTOs;
+﻿using FirstAngular.Application.Common.Results;
+using FirstAngular.Application.Features.Auth.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,11 @@ using System.Threading.Tasks;
 
 namespace FirstAngular.Application.Features.RefreshTokens.Commands
 {
-    public class RefreshTokenCommand: IRequest<LoginResponse>
-    {
-        public string Token { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
-    }
+    //public class RefreshTokenCommand: IRequest<LoginResponse>
+    //{
+    //    public string Token { get; set; } = string.Empty;
+    //    public string RefreshToken { get; set; } = string.Empty;
+    //}
+    public sealed record class RefreshTokenCommand(string RefreshToken)
+        : IRequest<Result<LoginResponse>>;
 }
