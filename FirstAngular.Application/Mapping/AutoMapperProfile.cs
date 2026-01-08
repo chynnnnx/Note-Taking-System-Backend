@@ -48,9 +48,8 @@ namespace FirstAngular.Application.Mapping
 
             CreateMap<UpdateCategoryCommand, CategoryEntity>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-
+                .ForMember(dest => dest.UserId, opt => opt.Ignore());
+ 
 
 
         }
