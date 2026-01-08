@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Interfaces;
 using AutoMapper;
 using FirstAngular.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using FirstAngular.Application.Features.User.DTOs;
 
 namespace FirstAngular.Application.Features.User.Queries
 {
