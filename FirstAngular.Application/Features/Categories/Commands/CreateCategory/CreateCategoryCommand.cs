@@ -1,5 +1,5 @@
 ﻿using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
+using FirstAngular.Application.Features.Categories.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 
 namespace FirstAngular.Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommand: IRequest<Result<CategoryDTO>>
-    {
-        public string UserId { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-    }
+    //public class CreateCategoryCommand: IRequest<Result<CategoryDTO>>
+    //{
+    //    public string UserId { get; set; } = string.Empty;
+    //    public string Name { get; set; } = string.Empty;
+    //}
+
+    public sealed record CreateCategoryCommand(string Name) : IRequest<Result<CategoryDTO>>;
 }

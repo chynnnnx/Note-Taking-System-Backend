@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FirstAngular.Application.DTOs;
 using FirstAngular.Application.Interfaces;
 using AutoMapper;
 using FirstAngular.Domain.Entities;
+using FirstAngular.Application.Features.Categories.DTOs;
 
 namespace FirstAngular.Application.Features.Categories.Commands.CreateCategory
 {
@@ -29,9 +29,10 @@ namespace FirstAngular.Application.Features.Categories.Commands.CreateCategory
         {
             var userId = _currentUserService.UserId;
             if (string.IsNullOrEmpty(userId)) return Result<CategoryDTO>.Fail("User not logged in");
-            var category = _mapper.Map<CategoryEntity>(command);
-            category.UserId = userId;
-            category.CreatedAt = DateTime.UtcNow;
+            //var category = _mapper.Map<CategoryEntity>(command);
+            //category.UserId = userId;
+            //category.CreatedAt = DateTime.UtcNow;
+            var category = CategoryEntity.Create(userId: userId, name: command.Name);
 
             await _unitOfWork.CategoryRepository.AddAsync(category);
             await _unitOfWork.SaveChangesAsync();
