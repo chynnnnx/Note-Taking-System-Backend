@@ -33,25 +33,25 @@ namespace FirstAngular.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNote(Guid id, UpdateNoteCommand command)
         {
-            command.Id = id;
+            var commandWithId = command with { Id = id };
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(commandWithId);
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(new { data = result.Data, message = result.Message });
         }
         [HttpPatch("{id}/toggle-pin")]
         public async Task<IActionResult> PinUnpinNote(Guid id, [FromBody] ToggleNotePinCommand command)
         {
-            command.Id = id;
-            var result = await _mediator.Send(command);
+            var commandWithId = command with { Id = id };
+            var result = await _mediator.Send(commandWithId);
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
         [HttpPatch("{id}/archive")]
         public async Task<IActionResult> ArchiveNote(Guid id, [FromBody] ArchiveNoteCommand command)
         {
-            command.Id = id;
-            var result = await _mediator.Send(command);
+            var commandWithId = command with { Id = id };
+            var result = await _mediator.Send(commandWithId);
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
@@ -59,8 +59,8 @@ namespace FirstAngular.WebApi.Controllers
         [HttpPatch("{id}/unarchive")]
         public async Task<IActionResult> UnArchiveNote (Guid id, [FromBody] UnarchiveNoteCommand command)
         {
-            command.Id = id;
-            var result = await _mediator.Send(command);
+            var commandWithId = command with { Id = id };
+            var result = await _mediator.Send(commandWithId);
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
         }
@@ -69,7 +69,7 @@ namespace FirstAngular.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(Guid id)
         {
-            var command = new DeleteNoteCommand { Id = id };
+            var command = new DeleteNoteCommand (  id);
             var result = await _mediator.Send(command);
 
             if (!result.Success) return BadRequest(new { message = result.Error });
