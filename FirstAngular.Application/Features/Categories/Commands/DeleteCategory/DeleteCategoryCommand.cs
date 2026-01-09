@@ -8,8 +8,10 @@ using FirstAngular.Application.Common.Results;
 
 namespace FirstAngular.Application.Features.Categories.Commands.DeleteCategory
 {
-    public class DeleteCategoryCommand: IRequest<Result<object>>
-    {
-        public Guid Id { get; set; }
-    }
+    //public class DeleteCategoryCommand: IRequest<Result<object>>
+    //{
+    //    public Guid Id { get; set; }
+    //}
+    public sealed record DeleteCategoryCommand(Guid Id)
+        : IRequest<Result<object>>;
 }
