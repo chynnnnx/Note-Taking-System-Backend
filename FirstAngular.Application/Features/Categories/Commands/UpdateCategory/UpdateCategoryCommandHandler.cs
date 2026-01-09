@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using FirstAngular.Application.Common.Helpers;
 using FirstAngular.Application.Common.Results;
-using FirstAngular.Application.DTOs;
+using FirstAngular.Application.Features.Categories.DTOs;
 using FirstAngular.Application.Interfaces;
 using MediatR;
 using Microsoft.IdentityModel.Tokens.Experimental;
@@ -34,12 +35,17 @@ namespace FirstAngular.Application.Features.Categories.Commands.UpdateCategory
             if (category == null || category.UserId != userId)
               return Result<CategoryDTO>.Fail("Category not found or access denied.");
             
+            var hasChanges  = UpdateHelper.HasChanges((category.Name, command.Name));
+            if (hasChanges ) category.Update(command.Name);
 
-            var updatedCategory = _mapper.Map(command, category);
-            _unitOfWork.CategoryRepository.Update(updatedCategory);
-            await _unitOfWork.SaveChangesAsync();
-            var dto = _mapper.Map<CategoryDTO>(updatedCategory);
-            return Result<CategoryDTO>.Ok(dto);
+            _unitOfWork.CategoryRepository.Update(category);
+            await _unitOfWork.SaveChangesAsync( );
+
+            var dto = _mapper.Map<CategoryDTO>(category);
+            var message = UpdateHelper.GetMessage("Category", hasChanges);
+
+            return Result<CategoryDTO>.Ok(dto, message);
+
         }
     }
 }
