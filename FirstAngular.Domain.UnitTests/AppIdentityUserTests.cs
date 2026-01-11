@@ -4,39 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FirstAngular.Domain.Entities;
+  using Xunit;
+ 
 
 namespace FirstAngular.Domain.UnitTests
 {
     public class AppIdentityUserTests
     {
         [Fact]
-        public void Properties_HaveDefaultValues()
+        public void CanCreateUserWithFactory()
         {
-            // Arrange
-            var user = new AppIdentityUser();
+             var user = AppIdentityUser.Create("Juan", "D", "Santos", "juan@example.com");
 
-            // Assert
-            Assert.Equal(string.Empty, user.FirstName);
-            Assert.Equal(string.Empty, user.MiddleInitial);
-            Assert.Equal(string.Empty, user.LastName);
+             Assert.Equal("Juan", user.FirstName);
+            Assert.Equal("D", user.MiddleInitial);
+            Assert.Equal("Santos", user.LastName);
+            Assert.Equal("juan@example.com", user.Email);
         }
 
         [Fact]
-        public void CanSetProperties()
+        public void UpdateProfile_ChangesProperties_WhenDifferent()
         {
-            // Arrange
-            var user = new AppIdentityUser
-            {
-                FirstName = "Juan",
-                MiddleInitial = "D",
-                LastName = "Santos"
-            };
+             var user = AppIdentityUser.Create("Juan", "D", "Santos", "juan@example.com");
 
-            // Assert
+             var changed = user.UpdateProfile("Jose", "M", "Garcia");
+
+             Assert.True(changed);
+            Assert.Equal("Jose", user.FirstName);
+            Assert.Equal("M", user.MiddleInitial);
+            Assert.Equal("Garcia", user.LastName);
+        }
+
+        [Fact]
+        public void UpdateProfile_ReturnsFalse_WhenValuesAreSame()
+        {
+             var user = AppIdentityUser.Create("Juan", "D", "Santos", "juan@example.com");
+
+             var changed = user.UpdateProfile("Juan", "D", "Santos");
+
+             Assert.False(changed);
             Assert.Equal("Juan", user.FirstName);
             Assert.Equal("D", user.MiddleInitial);
             Assert.Equal("Santos", user.LastName);
         }
     }
-
 }
