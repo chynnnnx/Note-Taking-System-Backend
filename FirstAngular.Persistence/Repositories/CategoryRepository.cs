@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FirstAngular.Persistence.Repositories
 {
     public class CategoryRepository : BaseRepository<CategoryEntity>, ICategoryRepository
-    {
+    { 
         public CategoryRepository(AppDbContext context) : base(context) { }
 
         public async Task<List<CategoryEntity>> GetCategoriesByUserAsync(string userId, string? searchTerm = null, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
