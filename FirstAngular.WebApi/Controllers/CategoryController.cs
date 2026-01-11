@@ -27,9 +27,9 @@ namespace FirstAngular.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(Guid id, UpdateCategoryCommand command)
         {
-            command.Id = id; 
+            var commandWithId = command with { Id = id };
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(commandWithId);
             if (!result.Success)
                 return BadRequest(new { message = result.Error });
 
@@ -49,7 +49,7 @@ namespace FirstAngular.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
-            var command = new DeleteCategoryCommand { Id = id };
+            var command = new DeleteCategoryCommand(id);
             var result = await _mediator.Send(command);
             if (!result.Success) return BadRequest(new { message = result.Error });
             return Ok(result.Data);
