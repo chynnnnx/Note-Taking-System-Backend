@@ -12,7 +12,7 @@ namespace FirstAngular.Application.Features.User.Commands.UpdateUser
    public sealed record class UpdateUserCommand(
        string FirstName,
        string? MiddleInitial,
-       string LastName,
-       string Id
+       string LastName
+      
    ) : IRequest<Result<UpdateUserDTO>>;
 }

@@ -15,7 +15,9 @@ namespace FirstAngular.Application.Features.User.Commands.UpdateUser
                 .NotEmpty().WithMessage("First name is required.");
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.");
-           
+            RuleFor(x => x.MiddleInitial)
+             .MaximumLength(1).WithMessage("Only middle initial needed.");
+
         }
     }
 }
