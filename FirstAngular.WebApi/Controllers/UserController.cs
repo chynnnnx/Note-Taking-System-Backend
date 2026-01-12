@@ -16,11 +16,10 @@ namespace FirstAngular.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, UpdateUserCommand command)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser( UpdateUserCommand command)
         {
-            var commandWithId = command with { Id = id };
-            var result = await _mediator.Send(commandWithId);
+             var result = await _mediator.Send(command);
 
             if (!result.Success)
                 return BadRequest(new { message = result.Error });
