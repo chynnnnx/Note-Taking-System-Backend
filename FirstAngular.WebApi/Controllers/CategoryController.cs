@@ -5,9 +5,11 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FirstAngular.Application.Features.Categories.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirstAngular.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
