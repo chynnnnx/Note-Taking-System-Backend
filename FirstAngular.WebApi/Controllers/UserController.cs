@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using FirstAngular.Application.Features.User.Queries;
 using FirstAngular.Application.Features.User.Commands.UpdateUser;
 using FirstAngular.Application.Features.User.Commands.ChangePassword;
+using Microsoft.AspNetCore.Authorization;
 namespace FirstAngular.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
