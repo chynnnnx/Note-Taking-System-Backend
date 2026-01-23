@@ -8,9 +8,11 @@ using FirstAngular.Application.Features.Notes.Queries;
 using FirstAngular.Application.Features.Notes.Commands.TogglePin;
 using FirstAngular.Application.Features.Archives.Commands.ArchiveNote;
 using FirstAngular.Application.Features.Archives.Commands.UnarchiveNote;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirstAngular.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NoteController : ControllerBase
