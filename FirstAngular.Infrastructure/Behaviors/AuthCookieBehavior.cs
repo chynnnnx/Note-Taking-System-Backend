@@ -1,5 +1,5 @@
-﻿using FirstAngular.Application.DTOs;
-using FirstAngular.Application.Features.Auth.Commands;
+﻿using FirstAngular.Application.Features.Auth.Commands;
+using FirstAngular.Application.Features.Auth.DTOs;
 using FirstAngular.Application.Features.RefreshTokens.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Http;
