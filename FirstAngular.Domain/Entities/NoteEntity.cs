@@ -14,6 +14,7 @@ namespace FirstAngular.Domain.Entities
         public string Content { get; private set; } = string.Empty;
         public bool IsPinned { get; private set; }
         public bool IsArchived { get; private set; }
+        public bool IsFavorite { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
@@ -58,12 +59,19 @@ namespace FirstAngular.Domain.Entities
             return true;
         }
 
-
+        public bool Favorite()
+        {
+            if (IsArchived) return false;
+            IsFavorite = !IsFavorite;
+            UpdatedAt = DateTime.UtcNow;
+            return true;
+        }
         public bool Archive()
         {
             if (IsArchived) return false;
             IsPinned = false;
             IsArchived = true;
+            IsFavorite = false;
             UpdatedAt = DateTime.UtcNow;
             return true;
         }
