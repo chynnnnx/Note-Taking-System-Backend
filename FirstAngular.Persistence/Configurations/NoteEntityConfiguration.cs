@@ -24,6 +24,8 @@ namespace FirstAngular.Persistence.Configurations
                 .IsRequired();
             builder.Property(n=>n.IsPinned)
                  .HasDefaultValue(false);
+            builder.Property(n => n.IsFavorite)
+                .HasDefaultValue(false);
             builder.Property(n=>n.IsArchived)
                 .HasDefaultValue(false);
             builder.Property(n => n.CreatedAt)
