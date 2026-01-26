@@ -9,6 +9,7 @@ using FirstAngular.Application.Features.Notes.Commands.TogglePin;
 using FirstAngular.Application.Features.Archives.Commands.ArchiveNote;
 using FirstAngular.Application.Features.Archives.Commands.UnarchiveNote;
 using Microsoft.AspNetCore.Authorization;
+using FirstAngular.Application.Features.Favorites.Commands;
 
 namespace FirstAngular.WebApi.Controllers
 {
@@ -64,6 +65,16 @@ namespace FirstAngular.WebApi.Controllers
             var commandWithId = command with { Id = id };
             var result = await _mediator.Send(commandWithId);
             if (!result.Success) return BadRequest(new { message = result.Error });
+            return Ok(result.Data);
+        }
+        [HttpPatch("{id}/favorite")]
+        public async Task<IActionResult> ToggleFavorite(Guid id)
+        {
+            var command = new ToggleFavoriteCommand(id);
+            var result = await _mediator.Send(command);
+
+            if (!result.Success) return BadRequest(new { message = result.Error });
+
             return Ok(result.Data);
         }
 
