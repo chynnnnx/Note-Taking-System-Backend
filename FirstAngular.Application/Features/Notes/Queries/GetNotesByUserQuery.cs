@@ -21,6 +21,7 @@ namespace FirstAngular.Application.Features.Notes.Queries
     public sealed record GetNotesByUserQuery(
         bool? IsPinned,
         bool? IsArchived,
+        bool? IsFavorite,
         string? SearchTerm,
         int PageNumber = 1,
         int PageSize = 10

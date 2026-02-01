@@ -29,7 +29,7 @@ namespace FirstAngular.Application.Features.Notes.Queries
 
          
             var (notes, totalCount) = await _unitOfWork.NoteRepository.GetNotesByUserAsync(
-                userId,query.IsPinned,query.IsArchived,  query.SearchTerm,query.PageNumber,
+                userId,query.IsPinned,query.IsArchived, query.IsFavorite,  query.SearchTerm,query.PageNumber,
                 query.PageSize,cancellationToken);
 
 
