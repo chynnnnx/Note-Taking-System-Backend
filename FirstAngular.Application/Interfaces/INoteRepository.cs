@@ -10,7 +10,8 @@ namespace FirstAngular.Application.Interfaces
     public interface INoteRepository : IBaseRepository<NoteEntity>
     {
       
-        Task<(List<NoteEntity> Notes, int TotalCount)> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, string? searchTerm = null,
+        Task<(List<NoteEntity> Notes, int TotalCount)> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, bool? isFavorite = null,
+ string? searchTerm = null,
      int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default);
 
     }

@@ -15,7 +15,7 @@ namespace FirstAngular.Persistence.Repositories
     { 
      public NoteRepository(AppDbContext context) : base(context) { }
 
-        public async Task<(List<NoteEntity> Notes, int TotalCount)> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, string? searchTerm = null,
+        public async Task<(List<NoteEntity> Notes, int TotalCount)> GetNotesByUserAsync(string userId, bool? isPinned = null, bool? isArchived = null, bool? isFavorite = null, string? searchTerm = null,
           int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         {
             var query = _dbSet.AsNoTracking().Where(n => n.UserId == userId);
@@ -25,6 +25,9 @@ namespace FirstAngular.Persistence.Repositories
 
             if (isArchived.HasValue)
                 query = query.Where(n => n.IsArchived == isArchived.Value);
+
+            if (isFavorite.HasValue)
+                query = query.Where(n => n.IsFavorite == isFavorite.Value);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
                 query = query.Where(n =>
@@ -41,6 +44,7 @@ namespace FirstAngular.Persistence.Repositories
 
             return (notes, totalCount);
         }
+      
 
     }
 }

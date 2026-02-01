@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Archives\Queries\" />
-    <Folder Include="Features\To-Dos\Commands\" />
-    <Folder Include="Features\To-Dos\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
