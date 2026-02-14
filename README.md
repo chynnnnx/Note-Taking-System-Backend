@@ -18,7 +18,7 @@ The backend handles authentication, API endpoints, and data management for the A
 ## Tech Stack
 - **Backend:** .NET 9, C#  
 - **Patterns:** Clean Architecture, CQRS, Mediator  
-- **Database:** SQL Server  
+- **Database:** SQL Server  (MSSQL)
 - **Authentication:** JWT  
 - **Frontend:** Angular (frontend not included in this repo)  
 
