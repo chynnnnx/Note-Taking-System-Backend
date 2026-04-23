@@ -12,7 +12,7 @@ namespace FirstAngular.Persistence.Data
     public class AppDbContext: IdentityDbContext<AppIdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
+        //entities
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<NoteEntity> Notes { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
